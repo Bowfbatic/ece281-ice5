@@ -96,12 +96,12 @@ begin
 
 	-- CONCURRENT STATEMENTS ------------------------------------------------------------------------------
 	-- Next State Logic
-    f_Q_next <= s_floor2 when (f_Q = s_floor1 and i_up_down = '1') else -- going up
-                s_floor3 when (f_Q = s_floor2 and i_up_down = '1') else -- going up
-                s_floor4 when (f_Q = s_floor3 and i_up_down = '1') else -- going up
-                s_floor3 when (f_Q = s_floor4 and i_up_down = '0') else -- going down
-                s_floor2 when (f_Q = s_floor3 and i_up_down = '0') else -- going down
-                s_floor1 when (f_Q = s_floor2 and i_up_down = '0') else -- going down
+    f_Q_next <= s_floor2 when (f_Q = s_floor1 and i_up_down = '1' and i_stop = '0') else -- going up
+                s_floor3 when (f_Q = s_floor2 and i_up_down = '1' and i_stop = '0') else -- going up
+                s_floor4 when (f_Q = s_floor3 and i_up_down = '1' and i_stop = '0') else -- going up
+                s_floor3 when (f_Q = s_floor4 and i_up_down = '0' and i_stop = '0') else -- going down
+                s_floor2 when (f_Q = s_floor3 and i_up_down = '0' and i_stop = '0') else -- going down
+                s_floor1 when (f_Q = s_floor2 and i_up_down = '0' and i_stop = '0') else -- going down
                 s_floor1 when (f_Q = s_floor1 and i_up_down = '0' and i_stop = '0') else -- stay
                 s_floor1 when (f_Q = s_floor1 and i_stop = '1') else -- stay
                 s_floor2 when (f_Q = s_floor2 and i_stop = '1') else -- stay
@@ -130,6 +130,8 @@ begin
             f_Q <= s_floor2;
             elsif (i_stop = '0') then
             f_Q <= f_Q_next;
+            else
+            f_Q <= f_Q;
             end if;
         end if;
         -- if elevator is enabled, advance floors
